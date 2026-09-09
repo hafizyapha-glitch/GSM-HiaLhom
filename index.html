@@ -730,6 +730,71 @@ async function tt_loadSuggestions() {
   } catch (e) { console.warn('Could not load TT suggestion data:', e); }
 }
 
+function toggleEditMode(platform, id) {
+  const prefix = platform === 'facebook' ? '' : 'tt-';
+  const noteEl = document.getElementById(`${prefix}topAdNote${id}`);
+  const wrapperEl = document.getElementById(`${prefix}topAdContentWrapper${id}`);
+  const saveBtn = document.getElementById(`${prefix}saveBtn${id}`);
+  
+  if (noteEl.style.display === 'none') {
+    noteEl.style.display = 'block';
+    wrapperEl.style.opacity = '0';
+    wrapperEl.style.pointerEvents = 'none';
+    saveBtn.style.display = 'inline-flex';
+    noteEl.focus();
+  } else {
+    // ซ่อนกลับ ถ้าไม่มีข้อความ
+    if(noteEl.value.trim() === '') {
+        noteEl.style.display = 'none';
+        wrapperEl.style.opacity = '1';
+        wrapperEl.style.pointerEvents = 'auto';
+        saveBtn.style.display = 'none';
+    }
+  }
+}
+
+function updateSuggestionData(platform, boxId, newText) {
+  const currentMonth = platform === 'facebook' ? document.getElementById('fb-filterMonth').value : document.getElementById('tt-monthSelect').value;
+  const dataArray = platform === 'facebook' ? fb_suggestionData : tt_suggestionData;
+  
+  let row = dataArray.find(r => r.month === currentMonth && String(r.box_id) === String(boxId));
+  
+  if (row) {
+    row.note = newText;
+  } else {
+    // ถ้ายังไม่มีแถวของเดือนและกล่องนี้ ให้สร้างใหม่ใน Memory
+    dataArray.push({
+      month: currentMonth,
+      box_id: boxId,
+      title: document.getElementById(`${platform === 'facebook' ? '' : 'tt-'}suggestTitle${boxId}`).textContent,
+      subtitle: document.getElementById(`${platform === 'facebook' ? '' : 'tt-'}suggestSub${boxId}`).textContent,
+      note: newText
+    });
+  }
+}
+
+function exportSuggestions(platform) {
+  const dataArray = platform === 'facebook' ? fb_suggestionData : tt_suggestionData;
+  const fileName = platform === 'facebook' ? 'facebook-suggestion.csv' : 'tiktok-suggestion.csv';
+  
+  // แปลง Array กลับเป็น CSV (ใส่ BOM เพื่อให้ Excel เปิดภาษาไทยได้ไม่เพี้ยน)
+  const csv = Papa.unparse(dataArray);
+  const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+  
+  // สั่งดาวน์โหลด
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", fileName);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  if (platform === 'facebook') fb_showStatus(`💾 ดาวน์โหลดไฟล์ ${fileName} แล้ว นำไปวางทับไฟล์เดิมได้เลย`);
+  else tt_showStatus(`💾 ดาวน์โหลดไฟล์ ${fileName} แล้ว นำไปวางทับไฟล์เดิมได้เลย`);
+}
+
 function applySuggestions(platform = currentMainTab) {
   const currentMonth = platform === 'facebook' ? document.getElementById('fb-filterMonth').value : document.getElementById('tt-monthSelect').value;
   const prefix = platform === 'facebook' ? '' : 'tt-';
@@ -741,15 +806,20 @@ function applySuggestions(platform = currentMainTab) {
     const wrapperEl = document.getElementById(`${prefix}topAdContentWrapper${id}`);
     const titleEl = document.getElementById(`${prefix}suggestTitle${id}`);
     const subEl = document.getElementById(`${prefix}suggestSub${id}`);
+    const saveBtn = document.getElementById(`${prefix}saveBtn${id}`);
+
+    // อัปเดต Title เสมอ ถ้ามีในระบบ
+    if (row && row.title && titleEl) titleEl.textContent = row.title;
+    if (row && row.subtitle && subEl) subEl.textContent = row.subtitle;
 
     if (row && row.note && row.note.trim() !== '') {
       if (noteEl) { noteEl.value = row.note; noteEl.style.display = 'block'; }
       if (wrapperEl) { wrapperEl.style.opacity = '0'; wrapperEl.style.pointerEvents = 'none'; }
-      if (row.title && titleEl) titleEl.textContent = row.title;
-      if (row.subtitle && subEl) subEl.textContent = row.subtitle;
+      if (saveBtn) saveBtn.style.display = 'inline-flex';
     } else {
-      if (noteEl) noteEl.style.display = 'none';
+      if (noteEl) { noteEl.value = ''; noteEl.style.display = 'none'; }
       if (wrapperEl) { wrapperEl.style.opacity = '1'; wrapperEl.style.pointerEvents = 'auto'; }
+      if (saveBtn) saveBtn.style.display = 'none';
     }
   });
 }
