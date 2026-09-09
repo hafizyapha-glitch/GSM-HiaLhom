@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hia Lhom | Unified Ads Dashboard</title>
+  <title>Hia Lhom Dashboard</title>
 
   <!-- Favicon Link -->
   <link rel="icon" type="image/jpeg" href="https://scontent.fbkk22-5.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;_nc_map=urlgen_bucketless&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_ohc=d-yUUVVE6BgQ7kNvwFNeWMs&amp;_nc_oc=Adp5V4iJeiarzGN6WXYBMqIdDCagKjJvgmvfZu1ONu4nKc5sOnnaOgn1-HICfqZqIxo&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-5.fna&amp;_nc_gid=zq22-EsqhmHUIz7Potp2BA&amp;_nc_ss=7b2a8&amp;oh=00_AQK8x3fhp-b2nbRHIUqWPtW7UrWI0H8tmd-69HTRPyEKEA&amp;oe=6AA6E762">
@@ -1111,8 +1111,6 @@ window.fb_renderTopAds = function() {
   container.innerHTML = sortedAds.map((r, index) => {
     const adNameSafe = r.ad.replace(/"/g, '&quot;');
     const encodedAdName = encodeURIComponent(r.ad);
-    
-    // Facebook Image Source Update
     const imgSrcJpg = `./data/facebook/image/${encodedAdName}.jpg`;
     
     let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="handleAdImageError(this)">`;
@@ -1179,6 +1177,11 @@ window.fb_renderTopAds = function() {
       </div>`;
   }).join('');
 };
+
+function fb_handleMonthChange() {
+  fb_loadMonthData();
+  applySuggestions('facebook');
+}
 
 function fb_renderMonthlyTrendCharts() {
   const isDark = document.body.classList.contains('dark-mode');
@@ -1524,12 +1527,12 @@ async function fb_loadAllMonthsTrend() {
   const promises = fb_monthNames.map(async (month) => {
     let rows = [];
     try {
-      let res = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GMS.csv`);
+      let res = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GSM.csv`);
       if (res) {
         const text = await res.text();
         rows = Papa.parse(text, {header: true, skipEmptyLines: true}).data;
       } else {
-        res = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GMS.xlsx`);
+        res = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GSM.xlsx`);
         if (res) {
           const buffer = await res.arrayBuffer();
           const wb = XLSX.read(buffer, { type: 'array' });
@@ -1571,51 +1574,51 @@ async function fb_loadAllMonthsTrend() {
 async function fb_loadMonthData(isInit = false) {
   const month = document.getElementById('fb-filterMonth').value;
   if (!month) return; 
-  if(!isInit) fb_showStatus(`กำลังดึงข้อมูล Facebook ของเดือน ${month}...`);
+  if(!isInit) fb_showStatus(`กำลังดึงข้อมูล Facebook แคมเปญและภูมิภาคของเดือน ${month}...`);
 
   try {
     let mainLoaded = false;
-    let response = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GMS.csv`);
+    let response = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GSM.csv`);
     if (response) {
       const text = await response.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
       fb_processMainData(parsed.data);
-      document.getElementById('fb-mainSourceFile').textContent = `./data/facebook/data/${currentYear}-${month}-GMS.csv`;
+      document.getElementById('fb-mainSourceFile').textContent = `./data/facebook/data/${currentYear}-${month}-GSM.csv`;
       mainLoaded = true;
     } else {
-      response = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GMS.xlsx`);
+      response = await safeFetch(`./data/facebook/data/${currentYear}-${month}-GSM.xlsx`);
       if (response) {
         const arrayBuffer = await response.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
         fb_processMainData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
-        document.getElementById('fb-mainSourceFile').textContent = `./data/facebook/data/${currentYear}-${month}-GMS.xlsx`;
+        document.getElementById('fb-mainSourceFile').textContent = `./data/facebook/data/${currentYear}-${month}-GSM.xlsx`;
         mainLoaded = true;
       }
     }
 
     if (!mainLoaded) {
-      if(!isInit) fb_showStatus(`❌ ไม่พบไฟล์ ${currentYear}-${month}-GMS.csv หรือ .xlsx`);
+      if(!isInit) fb_showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${currentYear}-${month}-GSM.csv หรือ .xlsx`);
       fb_allData = []; fb_filteredData = [];
       document.getElementById('fb-mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูล (ค่า 0)';
     }
 
     let regionLoaded = false;
-    let regionResponse = await safeFetch(`./data/region/Region-${month}.csv`);
+    let regionResponse = await safeFetch(`./data/facebook/data/region/${currentYear}-${month}-GSM-RG.csv`);
     if (regionResponse) {
       const text = await regionResponse.text();
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
       fb_processRegionData(parsed.data);
-      document.getElementById('fb-regionSourceFile').textContent = `./data/region/Region-${month}.csv`;
+      document.getElementById('fb-regionSourceFile').textContent = `./data/facebook/data/region/${currentYear}-${month}-GSM-RG.csv`;
       regionLoaded = true;
     } else {
-      regionResponse = await safeFetch(`./data/region/Region-${month}.xlsx`);
+      regionResponse = await safeFetch(`./data/facebook/data/region/${currentYear}-${month}-GSM-RG.xlsx`);
       if (regionResponse) {
         const arrayBuffer = await regionResponse.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
         fb_processRegionData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
-        document.getElementById('fb-regionSourceFile').textContent = `./data/region/Region-${month}.xlsx`;
+        document.getElementById('fb-regionSourceFile').textContent = `./data/facebook/data/region/${currentYear}-${month}-GSM-RG.xlsx`;
         regionLoaded = true;
       }
     }
@@ -1683,6 +1686,7 @@ function fb_showStatus(msg) {
   bar.textContent = msg; bar.style.display = 'block';
   setTimeout(()=>{ bar.style.display='none'; }, 4000);
 }
+
 
 
 // ==================== TIKTOK ADS MODULE ====================
@@ -1778,20 +1782,20 @@ async function tt_fetchRawData(month) {
     if (window.location.protocol === 'blob:' || window.location.protocol === 'about:' || window.location.protocol === 'data:') {
       return { data: tt_getMockData(month), file: `(Mock) ${month}.csv` };
     }
-    let res = await safeFetch(`./data/tiktok/data/${currentYear}-${month}-GMS-TT.csv`);
+    let res = await safeFetch(`./data/tiktok/data/${currentYear}-${month}-GSM-TT.csv`);
     if (res) {
       const text = await res.text();
       const lastMod = res.headers.get('Last-Modified');
-      return new Promise(resolve => { Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => resolve({ data: r.data, lastMod, file: `${currentYear}-${month}-GMS-TT.csv` }) }); });
+      return new Promise(resolve => { Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => resolve({ data: r.data, lastMod, file: `${currentYear}-${month}-GSM-TT.csv` }) }); });
     }
-    res = await safeFetch(`./data/tiktok/data/${currentYear}-${month}-GMS-TT.xlsx`);
+    res = await safeFetch(`./data/tiktok/data/${currentYear}-${month}-GSM-TT.xlsx`);
     if (res) {
       const buffer = await res.arrayBuffer();
       const lastMod = res.headers.get('Last-Modified');
       const wb = XLSX.read(buffer, {type: 'array'});
       const ws = wb.Sheets[wb.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(ws, {defval: 0});
-      return { data, lastMod, file: `${currentYear}-${month}-GMS-TT.xlsx` };
+      return { data, lastMod, file: `${currentYear}-${month}-GSM-TT.xlsx` };
     }
   } catch (e) { }
   return null;
@@ -1820,7 +1824,7 @@ async function tt_fetchMonthData(month) {
   const prevRaw = await tt_fetchRawData(tt_prevMonthStr);
 
   if (!currentRaw) {
-    tt_showStatus(`⚠️ ไม่พบไฟล์ ${currentYear}-${month}-GMS-TT.csv หรือ .xlsx`);
+    tt_showStatus(`⚠️ ไม่พบไฟล์ข้อมูล TikTok ./data/${currentYear}-${month}-GSM-TT.csv หรือ .xlsx`);
     tt_allData = []; tt_filteredData = []; tt_prevAllData = []; tt_prevFilteredData = []; tt_hasPrevData = false;
     
     document.getElementById('tt-mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูล (ค่า 0)';
@@ -1850,9 +1854,7 @@ async function tt_fetchMonthData(month) {
   applySuggestions('tiktok');
 }
 
-function tt_handleMonthChange() { 
-  tt_fetchMonthData(document.getElementById('tt-monthSelect').value); 
-}
+function tt_handleMonthChange() { tt_fetchMonthData(document.getElementById('tt-monthSelect').value); }
 
 function tt_destroyCharts() { Object.values(tt_charts).forEach(c => { if(c) c.destroy(); }); tt_charts = {}; }
 function tt_renderAll() { tt_renderKPIs(); tt_renderCharts(); tt_renderTopAds(); tt_renderTable(); }
@@ -2136,7 +2138,6 @@ function tt_renderTopAds() {
     const cleanAdName = r.ad.replace(/['"]/g, '').trim();
     const encodedName = encodeURIComponent(cleanAdName);
     
-    // TikTok Image Source Update
     const jpgSrc = `./data/tiktok/image/${encodedName}.jpg`;
     const pngSrc = `./data/tiktok/image/${encodedName}.png`;
     const svgFallback = `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22293%22 viewBox=%220 0 220 293%22 fill=%22%23E5E7EB%22%3E%3Crect width=%22220%22 height=%22293%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2214%22 fill=%22%2394A3B8%22%3ENo Image%3C/text%3E%3C/svg%3E`;
@@ -2277,6 +2278,8 @@ Promise.all([
   fb_populateFilters();
   fb_renderAll();
   applySuggestions('facebook');
+  
+  // No need to call tt_renderAll here, tt_fetchMonthData already calls it
 });
 
 </script>
