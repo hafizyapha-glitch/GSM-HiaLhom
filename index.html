@@ -401,7 +401,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="topAdNote1" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="topAdNote1" readonly style="position: relative; width: 100%; min-height: 200px; resize: none; overflow-y: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
       
@@ -419,7 +419,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="topAdNote2" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="topAdNote2" readonly style="position: relative; width: 100%; min-height: 200px; resize: none; overflow-y: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
     </div>
@@ -558,7 +558,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="tt-topAdNote1" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="tt-topAdNote1" readonly style="position: relative; width: 100%; min-height: 200px; resize: none; overflow-y: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
       
@@ -576,7 +576,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="tt-topAdNote2" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="tt-topAdNote2" readonly style="position: relative; width: 100%; min-height: 200px; resize: none; overflow-y: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
     </div>
@@ -832,16 +832,35 @@ function applySuggestions(platform = currentMainTab) {
     if (row && row.subtitle && subEl) subEl.textContent = row.subtitle;
 
     if (row && row.note && row.note.trim() !== '') {
-      if (noteEl) { noteEl.value = row.note; noteEl.style.display = 'block'; }
+      if (noteEl) { 
+          noteEl.value = row.note; 
+          noteEl.style.display = 'block'; 
+          // ปรับความสูงให้พอดีกับ Text อัตโนมัติ
+          setTimeout(() => {
+              noteEl.style.height = 'auto';
+              noteEl.style.height = noteEl.scrollHeight + 'px';
+          }, 10);
+      }
       if (wrapperEl) { wrapperEl.style.opacity = '0'; wrapperEl.style.pointerEvents = 'none'; }
       if (saveBtn) saveBtn.style.display = 'inline-flex';
     } else {
-      if (noteEl) { noteEl.value = ''; noteEl.style.display = 'none'; }
+      if (noteEl) { noteEl.value = ''; noteEl.style.display = 'none'; noteEl.style.height = 'auto'; }
       if (wrapperEl) { wrapperEl.style.opacity = '1'; wrapperEl.style.pointerEvents = 'auto'; }
       if (saveBtn) saveBtn.style.display = 'none';
     }
   });
 }
+
+// ผูก Event ให้คำนวณความสูงใหม่ เมื่อมีการย่อ/ขยายหน้าจอ
+window.addEventListener('resize', () => {
+   const textareas = document.querySelectorAll('textarea[id*="topAdNote"]');
+   textareas.forEach(ta => {
+       if (ta.style.display === 'block') {
+           ta.style.height = 'auto';
+           ta.style.height = ta.scrollHeight + 'px';
+       }
+   });
+});
 
 // ==================== THEME & SETTINGS ====================
 if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
