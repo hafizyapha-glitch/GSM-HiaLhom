@@ -394,10 +394,6 @@
             <div class="chart-title" id="suggestTitle1">Performance Insights 1</div>
             <div class="chart-sub" id="suggestSub1" style="margin-bottom: 0;">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="saveBtn1" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('facebook')">💾 บันทึก CSV</button>
-            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('facebook', 1)" title="แก้ไข Note">✏️</button>
-          </div>
         </div>
         <div style="position: relative; flex-grow: 1; margin-top: 16px;">
           <div id="topAdContentWrapper1" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
@@ -405,7 +401,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="topAdNote1" onchange="updateSuggestionData('facebook', 1, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="topAdNote1" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
       
@@ -416,10 +412,6 @@
             <div class="chart-title" id="suggestTitle2">Performance Insights 2</div>
             <div class="chart-sub" id="suggestSub2" style="margin-bottom: 0;">ข้อเสนอแนะและแนวทางปรับปรุง</div>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="saveBtn2" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('facebook')">💾 บันทึก CSV</button>
-            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('facebook', 2)" title="แก้ไข Note">✏️</button>
-          </div>
         </div>
         <div style="position: relative; flex-grow: 1; margin-top: 16px;">
           <div id="topAdContentWrapper2" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
@@ -427,7 +419,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="topAdNote2" onchange="updateSuggestionData('facebook', 2, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="topAdNote2" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
     </div>
@@ -559,10 +551,6 @@
             <div class="chart-title" id="tt-suggestTitle1">Performance Insights 1</div>
             <div class="chart-sub" id="tt-suggestSub1" style="margin-bottom: 0;">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="tt-saveBtn1" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('tiktok')">💾 บันทึก CSV</button>
-            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('tiktok', 1)" title="แก้ไข Note">✏️</button>
-          </div>
         </div>
         <div style="position: relative; flex-grow: 1; margin-top: 16px;">
           <div id="tt-topAdContentWrapper1" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
@@ -570,7 +558,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="tt-topAdNote1" onchange="updateSuggestionData('tiktok', 1, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="tt-topAdNote1" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
       
@@ -581,10 +569,6 @@
             <div class="chart-title" id="tt-suggestTitle2">Performance Insights 2</div>
             <div class="chart-sub" id="tt-suggestSub2" style="margin-bottom: 0;">ข้อเสนอแนะและแนวทางปรับปรุง</div>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="tt-saveBtn2" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('tiktok')">💾 บันทึก CSV</button>
-            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('tiktok', 2)" title="แก้ไข Note">✏️</button>
-          </div>
         </div>
         <div style="position: relative; flex-grow: 1; margin-top: 16px;">
           <div id="tt-topAdContentWrapper2" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
@@ -592,7 +576,7 @@
               <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
             </div>
           </div>
-          <textarea id="tt-topAdNote2" onchange="updateSuggestionData('tiktok', 2, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+          <textarea id="tt-topAdNote2" readonly style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
         </div>
       </div>
     </div>
