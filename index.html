@@ -388,27 +388,47 @@
     <!-- Dynamic Suggestion Overlay FB -->
     <div class="charts-grid" style="margin-top: 24px;">
       <!-- Box 1 -->
-      <div class="chart-card" style="position: relative; min-height: 320px;">
-        <div id="topAdContentWrapper1" style="transition: opacity 0.3s ease;">
-          <div class="chart-title" id="suggestTitle1">Performance Insights 1</div>
-          <div class="chart-sub" id="suggestSub1">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
-          <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; margin-top: 16px; display: flex; align-items: center; justify-content: center; height: 200px;">
-            <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+      <div class="chart-card" style="display: flex; flex-direction: column; min-height: 320px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 11;">
+          <div>
+            <div class="chart-title" id="suggestTitle1">Performance Insights 1</div>
+            <div class="chart-sub" id="suggestSub1" style="margin-bottom: 0;">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="saveBtn1" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('facebook')">💾 บันทึก CSV</button>
+            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('facebook', 1)" title="แก้ไข Note">✏️</button>
           </div>
         </div>
-        <textarea id="topAdNote1" readonly style="position: absolute; top: 24px; left: 24px; width: calc(100% - 48px); height: calc(100% - 48px); resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; pointer-events: auto; outline: none;"></textarea>
+        <div style="position: relative; flex-grow: 1; margin-top: 16px;">
+          <div id="topAdContentWrapper1" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
+            <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 200px;">
+              <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+            </div>
+          </div>
+          <textarea id="topAdNote1" onchange="updateSuggestionData('facebook', 1, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+        </div>
       </div>
       
       <!-- Box 2 -->
-      <div class="chart-card" style="position: relative; min-height: 320px;">
-        <div id="topAdContentWrapper2" style="transition: opacity 0.3s ease;">
-          <div class="chart-title" id="suggestTitle2">Performance Insights 2</div>
-          <div class="chart-sub" id="suggestSub2">ข้อเสนอแนะและแนวทางปรับปรุง</div>
-          <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; margin-top: 16px; display: flex; align-items: center; justify-content: center; height: 200px;">
-            <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+      <div class="chart-card" style="display: flex; flex-direction: column; min-height: 320px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 11;">
+          <div>
+            <div class="chart-title" id="suggestTitle2">Performance Insights 2</div>
+            <div class="chart-sub" id="suggestSub2" style="margin-bottom: 0;">ข้อเสนอแนะและแนวทางปรับปรุง</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="saveBtn2" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('facebook')">💾 บันทึก CSV</button>
+            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('facebook', 2)" title="แก้ไข Note">✏️</button>
           </div>
         </div>
-        <textarea id="topAdNote2" readonly style="position: absolute; top: 24px; left: 24px; width: calc(100% - 48px); height: calc(100% - 48px); resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; pointer-events: auto; outline: none;"></textarea>
+        <div style="position: relative; flex-grow: 1; margin-top: 16px;">
+          <div id="topAdContentWrapper2" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
+            <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 200px;">
+              <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+            </div>
+          </div>
+          <textarea id="topAdNote2" onchange="updateSuggestionData('facebook', 2, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+        </div>
       </div>
     </div>
 
@@ -533,27 +553,47 @@
     <!-- Dynamic Suggestion Overlay TT -->
     <div class="charts-grid" style="margin-top: 24px;">
       <!-- Box 1 -->
-      <div class="chart-card" style="position: relative; min-height: 320px;">
-        <div id="tt-topAdContentWrapper1" style="transition: opacity 0.3s ease;">
-          <div class="chart-title" id="tt-suggestTitle1">Performance Insights 1</div>
-          <div class="chart-sub" id="tt-suggestSub1">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
-          <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; margin-top: 16px; display: flex; align-items: center; justify-content: center; height: 200px;">
-            <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+      <div class="chart-card" style="display: flex; flex-direction: column; min-height: 320px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 11;">
+          <div>
+            <div class="chart-title" id="tt-suggestTitle1">Performance Insights 1</div>
+            <div class="chart-sub" id="tt-suggestSub1" style="margin-bottom: 0;">ข้อมูลเชิงลึกและสถิติที่สำคัญ</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="tt-saveBtn1" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('tiktok')">💾 บันทึก CSV</button>
+            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('tiktok', 1)" title="แก้ไข Note">✏️</button>
           </div>
         </div>
-        <textarea id="tt-topAdNote1" readonly style="position: absolute; top: 24px; left: 24px; width: calc(100% - 48px); height: calc(100% - 48px); resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; pointer-events: auto; outline: none;"></textarea>
+        <div style="position: relative; flex-grow: 1; margin-top: 16px;">
+          <div id="tt-topAdContentWrapper1" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
+            <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 200px;">
+              <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+            </div>
+          </div>
+          <textarea id="tt-topAdNote1" onchange="updateSuggestionData('tiktok', 1, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+        </div>
       </div>
       
       <!-- Box 2 -->
-      <div class="chart-card" style="position: relative; min-height: 320px;">
-        <div id="tt-topAdContentWrapper2" style="transition: opacity 0.3s ease;">
-          <div class="chart-title" id="tt-suggestTitle2">Performance Insights 2</div>
-          <div class="chart-sub" id="tt-suggestSub2">ข้อเสนอแนะและแนวทางปรับปรุง</div>
-          <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; margin-top: 16px; display: flex; align-items: center; justify-content: center; height: 200px;">
-            <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+      <div class="chart-card" style="display: flex; flex-direction: column; min-height: 320px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 11;">
+          <div>
+            <div class="chart-title" id="tt-suggestTitle2">Performance Insights 2</div>
+            <div class="chart-sub" id="tt-suggestSub2" style="margin-bottom: 0;">ข้อเสนอแนะและแนวทางปรับปรุง</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="tt-saveBtn2" class="btn-outline" style="display:none; padding: 4px 12px; font-size: 12px; border-radius: 6px; align-items: center;" onclick="exportSuggestions('tiktok')">💾 บันทึก CSV</button>
+            <button class="circle-btn" style="width:28px; height:28px; font-size:12px;" onclick="toggleEditMode('tiktok', 2)" title="แก้ไข Note">✏️</button>
           </div>
         </div>
-        <textarea id="tt-topAdNote2" readonly style="position: absolute; top: 24px; left: 24px; width: calc(100% - 48px); height: calc(100% - 48px); resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; pointer-events: auto; outline: none;"></textarea>
+        <div style="position: relative; flex-grow: 1; margin-top: 16px;">
+          <div id="tt-topAdContentWrapper2" style="transition: opacity 0.3s ease; position: absolute; width: 100%; height: 100%; pointer-events: auto;">
+            <div class="chart-wrap" style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 200px;">
+              <span style="color: var(--muted); font-size: 13px;">[พื้นที่สำหรับกราฟสถิติ]</span>
+            </div>
+          </div>
+          <textarea id="tt-topAdNote2" onchange="updateSuggestionData('tiktok', 2, this.value)" style="position: relative; width: 100%; height: 100%; min-height: 200px; resize: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 14px; color: var(--text); display: none; box-shadow: var(--shadow-sm); z-index: 10; line-height: 1.6; outline: none;"></textarea>
+        </div>
       </div>
     </div>
 
@@ -692,7 +732,7 @@ async function safeFetch(url) {
   }
 }
 
-// Load FB Suggestions
+// ==================== SUGGESTION SYSTEM ====================
 async function fb_loadSuggestions() {
   try {
     let res = await safeFetch(`./data/facebook/facebook-suggestion.csv`);
@@ -711,7 +751,6 @@ async function fb_loadSuggestions() {
   } catch (e) { console.warn('Could not load FB suggestion data:', e); }
 }
 
-// Load TT Suggestions
 async function tt_loadSuggestions() {
   try {
     let res = await safeFetch(`./data/tiktok/tiktok-suggestion.csv`);
@@ -736,14 +775,13 @@ function toggleEditMode(platform, id) {
   const wrapperEl = document.getElementById(`${prefix}topAdContentWrapper${id}`);
   const saveBtn = document.getElementById(`${prefix}saveBtn${id}`);
   
-  if (noteEl.style.display === 'none') {
+  if (noteEl.style.display === 'none' || noteEl.style.display === '') {
     noteEl.style.display = 'block';
     wrapperEl.style.opacity = '0';
     wrapperEl.style.pointerEvents = 'none';
     saveBtn.style.display = 'inline-flex';
     noteEl.focus();
   } else {
-    // ซ่อนกลับ ถ้าไม่มีข้อความ
     if(noteEl.value.trim() === '') {
         noteEl.style.display = 'none';
         wrapperEl.style.opacity = '1';
@@ -756,18 +794,18 @@ function toggleEditMode(platform, id) {
 function updateSuggestionData(platform, boxId, newText) {
   const currentMonth = platform === 'facebook' ? document.getElementById('fb-filterMonth').value : document.getElementById('tt-monthSelect').value;
   const dataArray = platform === 'facebook' ? fb_suggestionData : tt_suggestionData;
+  const prefix = platform === 'facebook' ? '' : 'tt-';
   
   let row = dataArray.find(r => r.month === currentMonth && String(r.box_id) === String(boxId));
   
   if (row) {
     row.note = newText;
   } else {
-    // ถ้ายังไม่มีแถวของเดือนและกล่องนี้ ให้สร้างใหม่ใน Memory
     dataArray.push({
       month: currentMonth,
       box_id: boxId,
-      title: document.getElementById(`${platform === 'facebook' ? '' : 'tt-'}suggestTitle${boxId}`).textContent,
-      subtitle: document.getElementById(`${platform === 'facebook' ? '' : 'tt-'}suggestSub${boxId}`).textContent,
+      title: document.getElementById(`${prefix}suggestTitle${boxId}`).textContent,
+      subtitle: document.getElementById(`${prefix}suggestSub${boxId}`).textContent,
       note: newText
     });
   }
@@ -777,11 +815,9 @@ function exportSuggestions(platform) {
   const dataArray = platform === 'facebook' ? fb_suggestionData : tt_suggestionData;
   const fileName = platform === 'facebook' ? 'facebook-suggestion.csv' : 'tiktok-suggestion.csv';
   
-  // แปลง Array กลับเป็น CSV (ใส่ BOM เพื่อให้ Excel เปิดภาษาไทยได้ไม่เพี้ยน)
   const csv = Papa.unparse(dataArray);
   const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
   
-  // สั่งดาวน์โหลด
   const link = document.createElement("a");
   const url = URL.createObjectURL(blob);
   link.setAttribute("href", url);
@@ -808,7 +844,6 @@ function applySuggestions(platform = currentMainTab) {
     const subEl = document.getElementById(`${prefix}suggestSub${id}`);
     const saveBtn = document.getElementById(`${prefix}saveBtn${id}`);
 
-    // อัปเดต Title เสมอ ถ้ามีในระบบ
     if (row && row.title && titleEl) titleEl.textContent = row.title;
     if (row && row.subtitle && subEl) subEl.textContent = row.subtitle;
 
@@ -824,7 +859,7 @@ function applySuggestions(platform = currentMainTab) {
   });
 }
 
-// Global Theme Toggle
+// ==================== THEME & SETTINGS ====================
 if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
 const themeCheckbox = document.getElementById('themeToggleCheckbox');
 if (themeCheckbox) themeCheckbox.checked = document.body.classList.contains('dark-mode');
@@ -877,7 +912,6 @@ settingsOverlay?.addEventListener('click', closeDrawer);
 
 
 // ==================== FACEBOOK ADS MODULE ====================
-
 const fb_monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let fb_allMonthsAggregated = {}; 
 let fb_creativeLinksData = {}; 
@@ -940,10 +974,6 @@ async function fb_loadCreativeLinks() {
       }
     });
   } catch(e) {}
-}
-
-function fb_handleMonthChange() {
-  fb_loadMonthData();
 }
 
 function fb_renderKPIs() {
@@ -1250,7 +1280,6 @@ window.fb_renderTopAds = function() {
 
 function fb_handleMonthChange() {
   fb_loadMonthData();
-  applySuggestions('facebook');
 }
 
 function fb_renderMonthlyTrendCharts() {
@@ -1644,7 +1673,7 @@ async function fb_loadAllMonthsTrend() {
 async function fb_loadMonthData(isInit = false) {
   const month = document.getElementById('fb-filterMonth').value;
   if (!month) return; 
-  if(!isInit) fb_showStatus(`กำลังดึงข้อมูล Facebook แคมเปญและภูมิภาคของเดือน ${month}...`);
+  if(!isInit) fb_showStatus(`กำลังดึงข้อมูล Facebook ของเดือน ${month}...`);
 
   try {
     let mainLoaded = false;
@@ -1668,7 +1697,7 @@ async function fb_loadMonthData(isInit = false) {
     }
 
     if (!mainLoaded) {
-      if(!isInit) fb_showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${currentYear}-${month}-GSM.csv หรือ .xlsx`);
+      if(!isInit) fb_showStatus(`❌ ไม่พบไฟล์ ${currentYear}-${month}-GSM.csv หรือ .xlsx`);
       fb_allData = []; fb_filteredData = [];
       document.getElementById('fb-mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูล (ค่า 0)';
     }
@@ -1758,9 +1787,7 @@ function fb_showStatus(msg) {
 }
 
 
-
 // ==================== TIKTOK ADS MODULE ====================
-
 const tt_months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function tt_parseBranch(campaign) {
@@ -1894,7 +1921,7 @@ async function tt_fetchMonthData(month) {
   const prevRaw = await tt_fetchRawData(tt_prevMonthStr);
 
   if (!currentRaw) {
-    tt_showStatus(`⚠️ ไม่พบไฟล์ข้อมูล TikTok ./data/${currentYear}-${month}-GSM-TT.csv หรือ .xlsx`);
+    tt_showStatus(`⚠️ ไม่พบไฟล์ข้อมูล TikTok ./data/tiktok/data/${currentYear}-${month}-GSM-TT.csv หรือ .xlsx`);
     tt_allData = []; tt_filteredData = []; tt_prevAllData = []; tt_prevFilteredData = []; tt_hasPrevData = false;
     
     document.getElementById('tt-mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูล (ค่า 0)';
@@ -2213,6 +2240,8 @@ function tt_renderTopAds() {
     const svgFallback = `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22293%22 viewBox=%220 0 220 293%22 fill=%22%23E5E7EB%22%3E%3Crect width=%22220%22 height=%22293%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2214%22 fill=%22%2394A3B8%22%3ENo Image%3C/text%3E%3C/svg%3E`;
 
     const onErrorScript = `this.onerror=function(){ this.onerror=null; this.src='${svgFallback}'; }; this.src='${pngSrc}';`;
+    
+    const cpv = r.videoViews > 0 ? r.cost / r.videoViews : 0;
 
     return `
       <div class="carousel-card">
@@ -2224,6 +2253,7 @@ function tt_renderTopAds() {
           <div class="carousel-ad-title" title="${r.ad}">#${i+1} ${r.ad}</div>
           <div class="carousel-stat"><span>Views:</span> <strong>${r.videoViews.toLocaleString('en-US')}</strong></div>
           <div class="carousel-stat"><span>Cost:</span> <strong>฿${r.cost.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></div>
+          <div class="carousel-stat"><span>CPV:</span> <strong>฿${cpv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></div>
         </div>
       </div>
     `;
@@ -2327,7 +2357,6 @@ function tt_renderTable() {
 }
 
 // ==================== INITIALIZATION ====================
-
 const currentMonthIndex = new Date().getMonth();
 const currentMonthStrGlobal = fb_monthNames[currentMonthIndex];
 document.getElementById('fb-filterMonth').value = currentMonthStrGlobal;
@@ -2348,8 +2377,6 @@ Promise.all([
   fb_populateFilters();
   fb_renderAll();
   applySuggestions('facebook');
-  
-  // No need to call tt_renderAll here, tt_fetchMonthData already calls it
 });
 
 </script>
