@@ -1902,15 +1902,41 @@ async function tt_fetchRawData(month) {
 }
 
 function tt_processRawData(rows) {
-  return rows.map(r=>{
-    const campaign=r['Campaign name']||r['campaign']||'';
-    return { ad:r['Ad name']||r['ad']||'', status:r['Primary status']||'Active', campaign,
-      cost:parseFloat(r['Cost']||r['Spend']||0)||0, reach:parseInt(r['Reach']||0)||0, impressions:parseInt(r['Impressions']||0)||0,
-      videoViews:parseInt(r['Video views']||0)||0, view2s:parseInt(r['2-second video views']||0)||0, view6s:parseInt(r['6-second video views']||0)||0,
-      likes:parseInt(r['Paid likes']||0)||0, comments:parseInt(r['Paid comments']||0)||0, shares:parseInt(r['Paid shares']||0)||0,
-      follows:parseInt(r['Paid follows']||0)||0, profileVisits:parseInt(r['Paid profile visits']||0)||0, favorites:parseInt(r['Paid favorites']||0)||0,
-      branch:tt_parseBranch(campaign), objective:tt_parseObjective(campaign) };
-  }).filter(r=>r.ad&&r.ad!=='Total of 40 results'&&r.ad!=='-');
+  return rows.map(r => {
+    let ad = '', campaign = '', status = 'Active';
+    let cost = 0, reach = 0, impressions = 0, videoViews = 0, view2s = 0, view6s = 0;
+    let likes = 0, comments = 0, shares = 0, follows = 0, profileVisits = 0, favorites = 0;
+
+    for (let k in r) {
+      let cleanK = k ? k.trim().replace(/^\uFEFF/, '').toLowerCase() : '';
+      let val = r[k];
+      
+      let numVal = typeof val === 'string' ? parseFloat(val.replace(/,/g, '')) || 0 : (isNaN(val) ? 0 : Number(val));
+
+      if (['ad name', 'ad', 'ชื่อโฆษณา'].includes(cleanK)) ad = val;
+      else if (['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) campaign = val;
+      else if (['primary status', 'status', 'สถานะ'].includes(cleanK)) status = val;
+      else if (['cost', 'spend', 'ยอดใช้จ่าย'].includes(cleanK)) cost = numVal;
+      else if (['reach', 'การเข้าถึง'].includes(cleanK)) reach = numVal;
+      else if (['impressions', 'การแสดงผล'].includes(cleanK)) impressions = numVal;
+      else if (['video views', 'views', 'การรับชม'].includes(cleanK)) videoViews = numVal;
+      else if (['2-second video views'].includes(cleanK)) view2s = numVal;
+      else if (['6-second video views'].includes(cleanK)) view6s = numVal;
+      else if (['paid likes', 'likes', 'ยอดถูกใจ'].includes(cleanK)) likes = numVal;
+      else if (['paid comments', 'comments', 'ความคิดเห็น'].includes(cleanK)) comments = numVal;
+      else if (['paid shares', 'shares', 'การแชร์'].includes(cleanK)) shares = numVal;
+      else if (['paid follows', 'follows', 'ผู้ติดตาม'].includes(cleanK)) follows = numVal;
+      else if (['paid profile visits', 'profile visits'].includes(cleanK)) profileVisits = numVal;
+      else if (['paid favorites', 'favorites'].includes(cleanK)) favorites = numVal;
+    }
+
+    return { 
+      ad, status, campaign, cost, reach, impressions, videoViews, view2s, view6s,
+      likes, comments, shares, follows, profileVisits, favorites,
+      branch: tt_parseBranch(campaign), 
+      objective: tt_parseObjective(campaign) 
+    };
+  }).filter(r => r.ad && r.ad.toLowerCase() !== 'total' && !r.ad.includes('Total of') && r.ad !== '-');
 }
 
 async function tt_fetchMonthData(month) {
