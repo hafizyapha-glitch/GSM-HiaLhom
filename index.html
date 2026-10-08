@@ -1008,7 +1008,7 @@ function fb_renderKPIs() {
     const bmHtml = benchmark ? `<div class="kpi-benchmark"><span class="bm-label">Benchmark</span><span class="bm-val">${benchmark}</span></div>` : '';
     return `<div class="kpi-card">
       <div class="kpi-label">${label}</div>
-      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12\%,transparent);">${icon}</div>
+      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12%,transparent);">${icon}</div>
       <div class="kpi-value">${value}</div>
       <div class="kpi-sub">${sub}</div>${bmHtml}</div>`;
   }
@@ -2031,9 +2031,10 @@ function tt_renderKPIs() {
 
     return `<div class="kpi-card">
       <div class="kpi-label">${label}</div>
-      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12\%,transparent);">${icon}</div>
+      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12%,transparent);">${icon}</div>
       <div class="kpi-value">${value}</div>
-      <div class="kpi-sub">${sub}</div>${footerHtml}</div>`;
+      <div class="kpi-sub">${sub}</div>
+      ${footerHtml}</div>`;
   }
 
   const g1=[
@@ -2263,9 +2264,10 @@ function tt_renderTopAds() {
       <div class="carousel-card">
         ${linkTagStart}
           <img src="${jpgSrc}" class="carousel-image" alt="${r.ad}" onerror="${onErrorScript}">
-          ${iconHtml}${linkTagEnd}
+          ${iconHtml}
+        ${linkTagEnd}
         <div class="carousel-info">
-          <div class="carousel-ad-title" title="${r.ad}">#${i+1}${r.ad}</div>
+          <div class="carousel-ad-title" title="${r.ad}">#${i+1} ${r.ad}</div>
           <div class="carousel-stat"><span>Views:</span> <strong>${r.videoViews.toLocaleString('en-US')}</strong></div>
           <div class="carousel-stat"><span>Cost:</span> <strong>฿${r.cost.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></div>
           <div class="carousel-stat"><span>CPV:</span> <strong>฿${cpv.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></div>
@@ -2361,4 +2363,39 @@ function tt_renderTable() {
     <td><span class="badge badge-objective">${r.objective}</span></td>
     <td class="cost-cell">฿${r.cost.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
     <td class="num">${r.reach.toLocaleString('en-US')}</td>
-    <td
+    <td class="num">${r.impressions.toLocaleString('en-US')}</td>
+    <td class="num">${r.videoViews.toLocaleString('en-US')}</td>
+    <td class="num">${r.likes.toLocaleString('en-US')}</td>
+    <td class="num">${r.follows.toLocaleString('en-US')}</td>
+    <td class="num">${r.shares.toLocaleString('en-US')}</td>
+  </tr>`).join('');
+  
+  container.innerHTML = `<table><thead>${thead}</thead><tbody id="tt-tableBody">${tbody}</tbody></table>`;
+}
+
+// ==================== INITIALIZATION ====================
+const currentMonthIndex = new Date().getMonth();
+const currentMonthStrGlobal = fb_monthNames[currentMonthIndex];
+document.getElementById('fb-filterMonth').value = currentMonthStrGlobal;
+document.getElementById('tt-monthSelect').value = currentMonthStrGlobal;
+
+Promise.all([
+  // FB Init
+  fb_loadMonthData(true),
+  fb_loadAllMonthsTrend(),
+  fb_loadCreativeLinks(),
+  fb_loadSuggestions(),
+  
+  // TT Init
+  tt_fetchCreativeLinks(),
+  tt_loadSuggestions(),
+  tt_fetchMonthData(currentMonthStrGlobal)
+]).finally(() => {
+  fb_populateFilters();
+  fb_renderAll();
+  applySuggestions('facebook');
+});
+
+</script>
+</body>
+</html>
